@@ -26,11 +26,17 @@ const BoxBottom = styled.div`
   background: #987c5a;
 `
 
+const Divider = styled.div`
+  background: linear-gradient(#6e5c48, #6e5c48) no-repeat center/2px 100%;
+`
+
 const IndexPage = () => (
   <AppContainer>
     <SEO title="App" />
     <Box>
-      <BoxTop />
+      <BoxTop>
+        <Divider />
+      </BoxTop>
       <BoxBottom />
     </Box>
   </AppContainer>
