@@ -132,7 +132,7 @@ const App = () => {
   }
   return (
     <AppContainer>
-      <SEO title="App" />
+      <SEO title="A Useless Box" />
       <Box>
         <BoxTop>
           <SwitchContainer>
