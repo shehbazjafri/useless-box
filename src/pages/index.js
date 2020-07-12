@@ -17,6 +17,10 @@ const AppContainer = styled.div`
 const Box = styled.div`
   width: 30vw;
   height: 20vh;
+  @media (max-width: 700px) {
+    width: 70vw;
+    height: 15vh;
+  }
 `
 
 const SwitchContainer = styled.div`
@@ -66,9 +70,9 @@ const Switch = styled.img`
 
 const Paw = styled.img`
   position: absolute;
-  right: ${props => (props.switchOff ? `19%` : `0%`)};
+  right: ${props => (props.switchOff ? `20%` : `0%`)};
   top: 30%;
-  height: 50px;
+  height: 30%;
   width: 40%;
   transition: right 0.5s;
 `
