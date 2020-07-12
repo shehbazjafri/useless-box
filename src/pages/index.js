@@ -85,14 +85,22 @@ const App = () => {
   const [isSwitchedOn, setIsSwitchedOn] = useState(false)
   const [isBoxOpen, setIsBoxOpen] = useState(false)
   const [catClosing, setCatClosing] = useState(false)
-  const switchSound = new Audio(SwitchSound)
+  const [sounds, setSounds] = useState({
+    switchSound: {},
+  })
+
+  useEffect(() => {
+    setSounds({
+      switchSound: new Audio(SwitchSound),
+    })
+  }, [])
 
   const catShouldCloseTheBox = () => {
     const randomInterval = randomIntFromInterval(0, 2000)
     setTimeout(() => {
       setCatClosing(true)
       setTimeout(() => {
-        switchSound.play()
+        sounds.switchSound.play()
         setIsSwitchedOn(false)
         setCatClosing(false)
         setIsBoxOpen(false)
@@ -118,7 +126,7 @@ const App = () => {
   }
 
   const handleSwitch = () => {
-    switchSound.play()
+    sounds.switchSound.play()
     setIsSwitchedOn(!isSwitchedOn)
     handleSlider(!isSwitchedOn)
   }
