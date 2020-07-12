@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import SEO from "../components/seo"
 import styled from "styled-components"
 import "../components/app.css"
 import SwitchImg from "../images/switchBlack.svg"
+import PawImg from "../images/paw.svg"
 import SwitchSound from "../assets/switch-5.mp3"
 
 const AppContainer = styled.div`
@@ -13,7 +14,14 @@ const AppContainer = styled.div`
   align-content: center;
 `
 
-const Box = styled.div``
+const Box = styled.div`
+  width: 30vw;
+  height: 20vh;
+  @media (max-width: 700px) {
+    width: 70vw;
+    height: 15vh;
+  }
+`
 
 const SwitchContainer = styled.div`
   position: absolute;
@@ -28,22 +36,22 @@ const SwitchContainer = styled.div`
 `
 
 const BoxTop = styled.div`
-  width: 30vw;
-  height: 20vh;
-  background: #bca386;
+  background: linear-gradient(90deg, #bca386 50%, #413221 50%);
   position: relative;
   display: flex;
   justify-content: center;
   align-content: center;
 `
 const BoxBottom = styled.div`
-  width: 30vw;
-  height: 20vh;
   background: #987c5a;
 `
 
-const Divider = styled.div`
-  border-right: 2px solid #6e5c48;
+const RightSlider = styled.div`
+  position: absolute;
+  right: 0;
+  width: ${props => (props.isOpen ? `35%` : `49%`)};
+  background: #bca386;
+  transition: width 0.5s;
 `
 
 const Switch = styled.img`
@@ -60,13 +68,59 @@ const Switch = styled.img`
     brightness(98%) contrast(92%)`};
 `
 
+const Paw = styled.img`
+  position: absolute;
+  right: ${props => (props.switchOff ? `20%` : `0%`)};
+  top: 30%;
+  height: 30%;
+  width: 40%;
+  transition: right 0.5s;
+`
+
+const randomIntFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 const App = () => {
   const [isSwitchedOn, setIsSwitchedOn] = useState(false)
+  const [isBoxOpen, setIsBoxOpen] = useState(false)
+  const [catClosing, setCatClosing] = useState(false)
   const switchSound = new Audio(SwitchSound)
+
+  const catShouldCloseTheBox = () => {
+    const randomInterval = randomIntFromInterval(0, 2000)
+    setTimeout(() => {
+      setCatClosing(true)
+      setTimeout(() => {
+        switchSound.play()
+        setIsSwitchedOn(false)
+        setCatClosing(false)
+        setIsBoxOpen(false)
+      }, 500)
+    }, randomInterval)
+  }
+
+  useEffect(() => {
+    if (isBoxOpen) {
+      catShouldCloseTheBox()
+    }
+  }, [isBoxOpen])
+
+  const handleSlider = shouldBoxOpen => {
+    if (shouldBoxOpen) {
+      const randomInterval = randomIntFromInterval(0, 2000)
+      setTimeout(() => {
+        setIsBoxOpen(true)
+      }, randomInterval)
+    } else {
+      setIsBoxOpen(false)
+    }
+  }
 
   const handleSwitch = () => {
     switchSound.play()
     setIsSwitchedOn(!isSwitchedOn)
+    handleSlider(!isSwitchedOn)
   }
   return (
     <AppContainer>
@@ -77,11 +131,12 @@ const App = () => {
             <Switch
               src={SwitchImg}
               alt="Red Switch"
-              onClick={handleSwitch}
+              onClick={isSwitchedOn ? null : handleSwitch}
               isSwitchedOn={isSwitchedOn}
             />
           </SwitchContainer>
-          <Divider />
+          <Paw src={PawImg} switchOff={catClosing} />
+          <RightSlider isOpen={isBoxOpen} />
         </BoxTop>
         <BoxBottom />
       </Box>
