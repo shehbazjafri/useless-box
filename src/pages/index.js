@@ -30,7 +30,7 @@ const SwitchContainer = styled.div`
 const BoxTop = styled.div`
   width: 30vw;
   height: 20vh;
-  background: #bca386;
+  background: linear-gradient(90deg, #bca386 50%, #413221 50%);
   position: relative;
   display: flex;
   justify-content: center;
@@ -42,8 +42,12 @@ const BoxBottom = styled.div`
   background: #987c5a;
 `
 
-const Divider = styled.div`
-  border-right: 2px solid #6e5c48;
+const RightSlider = styled.div`
+  position: absolute;
+  right: 0;
+  width: ${props => (props.isOpen ? `35%` : `49%`)};
+  background: #bca386;
+  transition: width 0.5s;
 `
 
 const Switch = styled.img`
@@ -62,11 +66,28 @@ const Switch = styled.img`
 
 const App = () => {
   const [isSwitchedOn, setIsSwitchedOn] = useState(false)
+  const [isBoxOpen, setIsBoxOpen] = useState(false)
   const switchSound = new Audio(SwitchSound)
+
+  const randomIntFromInterval = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+
+  const handleSlider = shouldBoxOpen => {
+    if (shouldBoxOpen) {
+      const randomInterval = randomIntFromInterval(0, 2000)
+      setTimeout(() => {
+        setIsBoxOpen(true)
+      }, randomInterval)
+    } else {
+      setIsBoxOpen(false)
+    }
+  }
 
   const handleSwitch = () => {
     switchSound.play()
     setIsSwitchedOn(!isSwitchedOn)
+    handleSlider(!isSwitchedOn)
   }
   return (
     <AppContainer>
@@ -81,7 +102,7 @@ const App = () => {
               isSwitchedOn={isSwitchedOn}
             />
           </SwitchContainer>
-          <Divider />
+          <RightSlider isOpen={isBoxOpen} />
         </BoxTop>
         <BoxBottom />
       </Box>
