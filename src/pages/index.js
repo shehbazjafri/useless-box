@@ -14,7 +14,10 @@ const AppContainer = styled.div`
   align-content: center;
 `
 
-const Box = styled.div``
+const Box = styled.div`
+  width: 30vw;
+  height: 20vh;
+`
 
 const SwitchContainer = styled.div`
   position: absolute;
@@ -29,8 +32,6 @@ const SwitchContainer = styled.div`
 `
 
 const BoxTop = styled.div`
-  width: 30vw;
-  height: 20vh;
   background: linear-gradient(90deg, #bca386 50%, #413221 50%);
   position: relative;
   display: flex;
@@ -38,8 +39,6 @@ const BoxTop = styled.div`
   align-content: center;
 `
 const BoxBottom = styled.div`
-  width: 30vw;
-  height: 20vh;
   background: #987c5a;
 `
 
@@ -70,6 +69,7 @@ const Paw = styled.img`
   right: ${props => (props.switchOff ? `19%` : `0%`)};
   top: 30%;
   height: 50px;
+  width: 40%;
   transition: right 0.5s;
 `
 
@@ -87,9 +87,9 @@ const App = () => {
     const randomInterval = randomIntFromInterval(0, 2000)
     setTimeout(() => {
       setCatClosing(true)
-      switchSound.play()
-      setIsSwitchedOn(false)
       setTimeout(() => {
+        switchSound.play()
+        setIsSwitchedOn(false)
         setCatClosing(false)
         setIsBoxOpen(false)
       }, 500)
