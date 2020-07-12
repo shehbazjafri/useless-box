@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import SEO from "../components/seo"
 import styled from "styled-components"
 import "../components/app.css"
 import SwitchImg from "../images/switchBlack.svg"
+import PawImg from "../images/paw.svg"
 import SwitchSound from "../assets/switch-5.mp3"
 
 const AppContainer = styled.div`
@@ -64,14 +65,42 @@ const Switch = styled.img`
     brightness(98%) contrast(92%)`};
 `
 
+const Paw = styled.img`
+  position: absolute;
+  right: ${props => (props.switchOff ? `19%` : `0%`)};
+  top: 30%;
+  height: 50px;
+  transition: right 0.5s;
+`
+
+const randomIntFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 const App = () => {
   const [isSwitchedOn, setIsSwitchedOn] = useState(false)
   const [isBoxOpen, setIsBoxOpen] = useState(false)
+  const [catClosing, setCatClosing] = useState(false)
   const switchSound = new Audio(SwitchSound)
 
-  const randomIntFromInterval = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
+  const catShouldCloseTheBox = () => {
+    const randomInterval = randomIntFromInterval(0, 2000)
+    setTimeout(() => {
+      setCatClosing(true)
+      switchSound.play()
+      setIsSwitchedOn(false)
+      setTimeout(() => {
+        setCatClosing(false)
+        setIsBoxOpen(false)
+      }, 500)
+    }, randomInterval)
   }
+
+  useEffect(() => {
+    if (isBoxOpen) {
+      catShouldCloseTheBox()
+    }
+  }, [isBoxOpen])
 
   const handleSlider = shouldBoxOpen => {
     if (shouldBoxOpen) {
@@ -102,6 +131,7 @@ const App = () => {
               isSwitchedOn={isSwitchedOn}
             />
           </SwitchContainer>
+          <Paw src={PawImg} switchOff={catClosing} />
           <RightSlider isOpen={isBoxOpen} />
         </BoxTop>
         <BoxBottom />
