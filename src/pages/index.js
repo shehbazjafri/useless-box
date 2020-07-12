@@ -127,7 +127,7 @@ const App = () => {
             <Switch
               src={SwitchImg}
               alt="Red Switch"
-              onClick={handleSwitch}
+              onClick={isSwitchedOn ? null : handleSwitch}
               isSwitchedOn={isSwitchedOn}
             />
           </SwitchContainer>
